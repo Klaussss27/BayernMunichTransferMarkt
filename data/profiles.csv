@@ -1,0 +1,5 @@
+player_name,age,goals,assists,position,minutes_played
+Example forward,24,15,8,Forward,2200
+Example midfielder,22,4,10,Midfielder,2400
+Example defender,27,2,3,Defender,2600
+Example goalkeeper,29,0,0,Goalkeeper,2900

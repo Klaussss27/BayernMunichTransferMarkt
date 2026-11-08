@@ -1,0 +1,28 @@
+{
+  "source": "https://github.com/dcaribou/transfermarkt-datasets",
+  "download_base": "https://pub-e682421888d945d684bcae8890b0ec20.r2.dev/data/",
+  "license": "CC0-1.0 (publisher declaration)",
+  "prepared_at": "2026-10-20T12:07:33.317452+00:00",
+  "season": "2025/26",
+  "competition": "Bundesliga (L1)",
+  "feature_cutoff_exclusive": "2026-05-17",
+  "valuation_window": [
+    "2026-05-17",
+    "2026-08-31"
+  ],
+  "valuation_date_min": "2026-05-20",
+  "valuation_date_max": "2026-06-11",
+  "league_matches": 306,
+  "players_with_appearances": 497,
+  "players_with_summer_target": 470,
+  "training_rows": 470,
+  "bayern_rows": 26,
+  "limitations": "Historical snapshot; not a live 2026/27 roster. Position is from downloaded player profiles, not a historical position table. Summer valuation availability filters the sample.",
+  "raw_sha256": {
+    "players": "d22e407981d5b51a79bf8ff59835729f3526f7dc3495a6d8ed2f852ed2e86403",
+    "games": "142561989017d379bcf9e72bad0b87e0996bae0e7b710ebb3def9255f464c741",
+    "appearances": "e096c2b158fc3d52c4550526c4d4850dd62f31007652f4bcae112eadb1646802",
+    "player_valuations": "608e32e5ad2231074f3505c469ad727be66d7e6efda6af918afd85379439631d",
+    "clubs": "aa57ab56e87faffaea1e8697439a32caf10116d8f2f2dfb3a57193c0bb1d641b"
+  }
+}

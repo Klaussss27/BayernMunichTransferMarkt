@@ -1,0 +1,11 @@
+.venv/
+.python-runtime/
+.python-runtime.zip
+__pycache__/
+.pytest_cache/
+artifacts/
+data/raw/
+.streamlit/secrets.toml
+.env
+.env.*
+catboost_info/

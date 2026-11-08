@@ -1,0 +1,53 @@
+{
+  "trained_at": "2026-11-08T16:07:38.695319+00:00",
+  "selected_model": "Top 3 validation blend",
+  "candidate_count": 14,
+  "test_caveat": "The historical 2025/26 test set has been reported in earlier experiments; this is a reused benchmark, not a newly untouched test set. Model selection uses validation MAE only.",
+  "python": "3.12.10",
+  "packages": {
+    "scikit-learn": "1.9.1",
+    "xgboost": "3.4.1",
+    "pandas": "2.3.3",
+    "numpy": "2.5.4"
+  },
+  "dataset_sha256": "fa4ede18e2136d0d2679cdf7b6a4f0917fc9adcec83a1351008c2dc087edf0a5",
+  "seed": 42,
+  "rows": 14192,
+  "unique_players": 4515,
+  "evaluation": "Disjoint player groups; fit through season 2023, validation/calibration season 2024, test season 2025 (starting years)",
+  "unused_rows": 7460,
+  "split_seasons": {
+    "fit": [
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "validation": [
+      2024
+    ],
+    "calibration": [
+      2024
+    ],
+    "test": [
+      2025
+    ]
+  },
+  "bundesliga_test": {
+    "rows": 39,
+    "mae": 6544022.968403258,
+    "r2": 0.12951917675458657
+  },
+  "test_interval_coverage": 0.9140625,
+  "split_sizes": {
+    "fit": 5982,
+    "validation": 265,
+    "calibration": 229,
+    "test": 256
+  },
+  "source": "data/forecast_players.sqlite",
+  "task": "next-season"
+}

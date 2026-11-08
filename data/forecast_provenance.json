@@ -1,0 +1,17 @@
+{
+  "task": "Next-season recorded market value from preceding-season performance",
+  "rows": 14192,
+  "unique_players": 4515,
+  "target_seasons": [
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "limitation": "Only players with consecutive observations are included, creating survivorship bias. Targets are source estimates, not realized transfer fees. Current-profile historical positions are not versioned."
+}

@@ -1,0 +1,415 @@
+{
+  "source": "https://github.com/dcaribou/transfermarkt-datasets",
+  "prepared_at": "2026-10-20T18:51:05.643812+00:00",
+  "season": "2016/17\u20132025/26",
+  "competition": "Bundesliga, Premier League, La Liga, Serie A, Ligue 1",
+  "training_rows": 24604,
+  "unique_players": 7645,
+  "league_matches": 17937,
+  "valuation_date_min": "2017-05-24",
+  "valuation_date_max": "2026-06-11",
+  "bayern_rows": 246,
+  "league_season_windows": [
+    {
+      "season": 2016,
+      "league": "ES1",
+      "matches": 380,
+      "feature_end": "2017-05-21",
+      "target_start": "2017-05-22",
+      "rows": 532
+    },
+    {
+      "season": 2016,
+      "league": "FR1",
+      "matches": 380,
+      "feature_end": "2017-05-20",
+      "target_start": "2017-05-21",
+      "rows": 532
+    },
+    {
+      "season": 2016,
+      "league": "GB1",
+      "matches": 380,
+      "feature_end": "2017-05-21",
+      "target_start": "2017-05-22",
+      "rows": 489
+    },
+    {
+      "season": 2016,
+      "league": "IT1",
+      "matches": 380,
+      "feature_end": "2017-05-28",
+      "target_start": "2017-05-29",
+      "rows": 549
+    },
+    {
+      "season": 2016,
+      "league": "L1",
+      "matches": 306,
+      "feature_end": "2017-05-20",
+      "target_start": "2017-05-21",
+      "rows": 458
+    },
+    {
+      "season": 2017,
+      "league": "ES1",
+      "matches": 380,
+      "feature_end": "2018-05-20",
+      "target_start": "2018-05-21",
+      "rows": 533
+    },
+    {
+      "season": 2017,
+      "league": "FR1",
+      "matches": 380,
+      "feature_end": "2018-05-19",
+      "target_start": "2018-05-20",
+      "rows": 499
+    },
+    {
+      "season": 2017,
+      "league": "GB1",
+      "matches": 380,
+      "feature_end": "2018-05-13",
+      "target_start": "2018-05-14",
+      "rows": 482
+    },
+    {
+      "season": 2017,
+      "league": "IT1",
+      "matches": 380,
+      "feature_end": "2018-05-20",
+      "target_start": "2018-05-21",
+      "rows": 523
+    },
+    {
+      "season": 2017,
+      "league": "L1",
+      "matches": 306,
+      "feature_end": "2018-05-12",
+      "target_start": "2018-05-13",
+      "rows": 459
+    },
+    {
+      "season": 2018,
+      "league": "ES1",
+      "matches": 380,
+      "feature_end": "2019-05-19",
+      "target_start": "2019-05-20",
+      "rows": 517
+    },
+    {
+      "season": 2018,
+      "league": "FR1",
+      "matches": 380,
+      "feature_end": "2019-05-24",
+      "target_start": "2019-05-25",
+      "rows": 517
+    },
+    {
+      "season": 2018,
+      "league": "GB1",
+      "matches": 380,
+      "feature_end": "2019-05-12",
+      "target_start": "2019-05-13",
+      "rows": 479
+    },
+    {
+      "season": 2018,
+      "league": "IT1",
+      "matches": 380,
+      "feature_end": "2019-05-26",
+      "target_start": "2019-05-27",
+      "rows": 525
+    },
+    {
+      "season": 2018,
+      "league": "L1",
+      "matches": 306,
+      "feature_end": "2019-05-18",
+      "target_start": "2019-05-19",
+      "rows": 465
+    },
+    {
+      "season": 2019,
+      "league": "ES1",
+      "matches": 380,
+      "feature_end": "2020-07-19",
+      "target_start": "2020-07-20",
+      "rows": 91
+    },
+    {
+      "season": 2019,
+      "league": "FR1",
+      "matches": 279,
+      "feature_end": "2020-03-08",
+      "target_start": "2020-03-09",
+      "rows": 504
+    },
+    {
+      "season": 2019,
+      "league": "GB1",
+      "matches": 380,
+      "feature_end": "2020-07-26",
+      "target_start": "2020-07-27",
+      "rows": 118
+    },
+    {
+      "season": 2019,
+      "league": "IT1",
+      "matches": 380,
+      "feature_end": "2020-08-02",
+      "target_start": "2020-08-03",
+      "rows": 514
+    },
+    {
+      "season": 2019,
+      "league": "L1",
+      "matches": 306,
+      "feature_end": "2020-06-27",
+      "target_start": "2020-06-28",
+      "rows": 125
+    },
+    {
+      "season": 2020,
+      "league": "ES1",
+      "matches": 380,
+      "feature_end": "2021-05-23",
+      "target_start": "2021-05-24",
+      "rows": 536
+    },
+    {
+      "season": 2020,
+      "league": "FR1",
+      "matches": 380,
+      "feature_end": "2021-05-23",
+      "target_start": "2021-05-24",
+      "rows": 545
+    },
+    {
+      "season": 2020,
+      "league": "GB1",
+      "matches": 380,
+      "feature_end": "2021-05-23",
+      "target_start": "2021-05-24",
+      "rows": 499
+    },
+    {
+      "season": 2020,
+      "league": "IT1",
+      "matches": 380,
+      "feature_end": "2021-05-23",
+      "target_start": "2021-05-24",
+      "rows": 584
+    },
+    {
+      "season": 2020,
+      "league": "L1",
+      "matches": 306,
+      "feature_end": "2021-05-22",
+      "target_start": "2021-05-23",
+      "rows": 489
+    },
+    {
+      "season": 2021,
+      "league": "ES1",
+      "matches": 380,
+      "feature_end": "2022-05-22",
+      "target_start": "2022-05-23",
+      "rows": 507
+    },
+    {
+      "season": 2021,
+      "league": "FR1",
+      "matches": 380,
+      "feature_end": "2022-05-21",
+      "target_start": "2022-05-22",
+      "rows": 515
+    },
+    {
+      "season": 2021,
+      "league": "GB1",
+      "matches": 380,
+      "feature_end": "2022-05-22",
+      "target_start": "2022-05-23",
+      "rows": 491
+    },
+    {
+      "season": 2021,
+      "league": "IT1",
+      "matches": 380,
+      "feature_end": "2022-05-22",
+      "target_start": "2022-05-23",
+      "rows": 540
+    },
+    {
+      "season": 2021,
+      "league": "L1",
+      "matches": 306,
+      "feature_end": "2022-05-14",
+      "target_start": "2022-05-15",
+      "rows": 476
+    },
+    {
+      "season": 2022,
+      "league": "ES1",
+      "matches": 380,
+      "feature_end": "2023-06-04",
+      "target_start": "2023-06-05",
+      "rows": 568
+    },
+    {
+      "season": 2022,
+      "league": "FR1",
+      "matches": 380,
+      "feature_end": "2023-06-03",
+      "target_start": "2023-06-04",
+      "rows": 575
+    },
+    {
+      "season": 2022,
+      "league": "GB1",
+      "matches": 380,
+      "feature_end": "2023-05-28",
+      "target_start": "2023-05-29",
+      "rows": 526
+    },
+    {
+      "season": 2022,
+      "league": "IT1",
+      "matches": 380,
+      "feature_end": "2023-06-04",
+      "target_start": "2023-06-05",
+      "rows": 572
+    },
+    {
+      "season": 2022,
+      "league": "L1",
+      "matches": 306,
+      "feature_end": "2023-05-27",
+      "target_start": "2023-05-28",
+      "rows": 499
+    },
+    {
+      "season": 2023,
+      "league": "ES1",
+      "matches": 380,
+      "feature_end": "2024-05-26",
+      "target_start": "2024-05-27",
+      "rows": 587
+    },
+    {
+      "season": 2023,
+      "league": "FR1",
+      "matches": 306,
+      "feature_end": "2024-05-19",
+      "target_start": "2024-05-20",
+      "rows": 515
+    },
+    {
+      "season": 2023,
+      "league": "GB1",
+      "matches": 380,
+      "feature_end": "2024-05-19",
+      "target_start": "2024-05-20",
+      "rows": 534
+    },
+    {
+      "season": 2023,
+      "league": "IT1",
+      "matches": 380,
+      "feature_end": "2024-06-02",
+      "target_start": "2024-06-03",
+      "rows": 570
+    },
+    {
+      "season": 2023,
+      "league": "L1",
+      "matches": 306,
+      "feature_end": "2024-05-18",
+      "target_start": "2024-05-19",
+      "rows": 488
+    },
+    {
+      "season": 2024,
+      "league": "ES1",
+      "matches": 380,
+      "feature_end": "2025-05-25",
+      "target_start": "2025-05-26",
+      "rows": 520
+    },
+    {
+      "season": 2024,
+      "league": "FR1",
+      "matches": 306,
+      "feature_end": "2025-05-17",
+      "target_start": "2025-05-18",
+      "rows": 482
+    },
+    {
+      "season": 2024,
+      "league": "GB1",
+      "matches": 380,
+      "feature_end": "2025-05-25",
+      "target_start": "2025-05-26",
+      "rows": 544
+    },
+    {
+      "season": 2024,
+      "league": "IT1",
+      "matches": 380,
+      "feature_end": "2025-05-25",
+      "target_start": "2025-05-26",
+      "rows": 540
+    },
+    {
+      "season": 2024,
+      "league": "L1",
+      "matches": 306,
+      "feature_end": "2025-05-17",
+      "target_start": "2025-05-18",
+      "rows": 467
+    },
+    {
+      "season": 2025,
+      "league": "ES1",
+      "matches": 380,
+      "feature_end": "2026-05-24",
+      "target_start": "2026-05-25",
+      "rows": 521
+    },
+    {
+      "season": 2025,
+      "league": "FR1",
+      "matches": 306,
+      "feature_end": "2026-05-17",
+      "target_start": "2026-05-18",
+      "rows": 500
+    },
+    {
+      "season": 2025,
+      "league": "GB1",
+      "matches": 380,
+      "feature_end": "2026-05-24",
+      "target_start": "2026-05-25",
+      "rows": 504
+    },
+    {
+      "season": 2025,
+      "league": "IT1",
+      "matches": 380,
+      "feature_end": "2026-05-24",
+      "target_start": "2026-05-25",
+      "rows": 529
+    },
+    {
+      "season": 2025,
+      "league": "L1",
+      "matches": 306,
+      "feature_end": "2026-05-16",
+      "target_start": "2026-05-17",
+      "rows": 470
+    }
+  ],
+  "limitations": "Historical nominal-euro targets; source updates paused in July 2026. Current profile position may differ from historical position. Summer target availability filters the sample. Ligue 1 2019/20 ended early. League and season context must match the prediction profile."
+}
