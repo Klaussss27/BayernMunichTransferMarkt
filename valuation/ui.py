@@ -9,20 +9,22 @@ def portrait(player_id, name, size=180):
         encoded = base64.b64encode(path.read_bytes()).decode("ascii")
         return f'<img class="portrait" src="data:image/jpeg;base64,{encoded}" alt="{escape(str(name), quote=True)}" style="width:{size}px;height:{size}px;object-fit:contain;object-position:center;background:#cbd0d8;border-radius:20px">'
     initials = escape("".join(word[0] for word in str(name).split()[:2]))
-    return f'<div class="initials" style="width:{size}px;height:{size}px">{initials}</div>'
+    return (
+        f'<div class="initials" style="width:{size}px;height:{size}px">{initials}</div>'
+    )
 
 
 def player_card(row):
     name = escape(str(row.player_name))
     position = escape(str(row.position))
-    return f'''<div class="player-card">{portrait(row.player_id, row.player_name, 100)}
+    return f"""<div class="player-card">{portrait(row.player_id, row.player_name, 100)}
 <div class="card-position">{position} · {int(row.age)} YEARS</div>
 <div class="card-name">{name}</div><div class="card-value">€{row.market_value_eur / 1e6:.1f}<span>m</span></div>
 <div class="card-footer">RECORDED VALUE · 2025/26</div>
-<div class="card-stats"><span><b>{int(row.goals)}</b> goals</span><span><b>{int(row.assists)}</b> assists</span><span><b>{int(row.minutes_played):,}</b> min</span></div></div>'''
+<div class="card-stats"><span><b>{int(row.goals)}</b> goals</span><span><b>{int(row.assists)}</b> assists</span><span><b>{int(row.minutes_played):,}</b> min</span></div></div>"""
 
 
-STYLES = '''<style>
+STYLES = """<style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 html,body,[class*="css"],.stApp{font-family:'DM Sans',sans-serif}
 .stApp{background:#0b1018;color:#edf2fa}
@@ -57,4 +59,4 @@ h2,h3{letter-spacing:-.7px}
 .section-note{font-size:12px;color:#8496af;line-height:1.7;margin:8px 0 20px}
 button[kind="primary"]{background:#e72e50!important;border-radius:9px!important;border:0!important;min-height:44px}
 @media(max-width:700px){.block-container{padding:1.4rem 1rem}.hero{padding:22px;gap:12px}.hero .portrait{width:110px!important;height:140px!important}h1{font-size:2.5rem!important}.status{display:none}.hero-stat span{display:block;margin-left:0}}
-</style>'''
+</style>"""

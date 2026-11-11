@@ -1,116 +1,71 @@
 # Bayern player valuation
 
-A football analytics project that estimates player market values from age, position, goals, assists and minutes played. It started with a Bayern-focused Bundesliga dataset and now uses ten seasons from five European leagues.
+I built this project to explore how well season statistics can explain a football player's market value. The initial focus was Bayern Munich and the Bundesliga. I later expanded the dataset to five European leagues and added a separate next-season prediction task.
 
-The Streamlit app lets you adjust a player's statistics, compare players and models, browse squads, and export results. A separate model estimates the following season's value.
+The project combines data preparation, regression models and a Streamlit dashboard. The main inputs are age, playing position, goals, assists and minutes played.
 
-## Run locally
+## Data preparation
 
-Install Python 3.11 or 3.12, then run these commands from the project folder on Windows:
+I used the public [Transfermarkt dataset maintained by dcaribou](https://github.com/dcaribou/transfermarkt-datasets). It contains player profiles, match appearances and historical market-value estimates. The published tables are marked CC0-1.0. The valuation labels are estimates from Transfermarkt, rather than completed transfer fees.
 
-```powershell
-./setup.ps1
-./run.ps1
-```
+I joined appearances with match records, grouped the statistics by player and season, and matched each record to the first available valuation after the league season ended. I excluded records without a suitable target and stored the prepared data in SQLite, with CSV exports for inspection.
 
-Setup installs the dependencies and trains both model collections from the included databases. Open the address printed by Streamlit, normally http://localhost:8501. Model files and the local Python environment are excluded from Git because of their size. Evaluation results are saved in `reports/`.
+The expanded dataset contains **24,604 player-season-league records from 7,645 players**, covering 2016/17 through 2025/26. It includes the Bundesliga, Premier League, La Liga, Serie A and Ligue 1, with statistics from 17,937 league matches. The source snapshot does not include 2026/27.
 
-For manual setup:
+I also kept the original Bundesliga-only dataset and recorded the source dates, coverage and preparation details in the provenance files.
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\python -m pip install -r requirements-lock.txt
-.\.venv\Scripts\python train.py --database data/european_players.sqlite --output artifacts/european_model.joblib
-.\.venv\Scripts\python prepare_forecast.py
-.\.venv\Scripts\python train.py --database data/forecast_players.sqlite --task next-season --output artifacts/forecast_model.joblib
-.\.venv\Scripts\python -m streamlit run app.py
-```
+## Model development
 
-On macOS or Linux, replace `.venv\Scripts\python` with `.venv/bin/python`. If a project-local `.python-runtime` is already installed, its `python.exe` can be used instead.
+I started with Random Forest and XGBoost, then added Extra Trees, histogram boosting, Huber gradient boosting, CatBoost and LightGBM. The benchmark compares 14 candidates, including a median baseline, different loss functions, log-transformed targets and a blend of the three best individual models on the validation set.
 
-## Data
+Besides the five basic inputs, the multi-season pipeline uses league and season context, goals and assists per 90 minutes, and total goal contributions. Previous market value is not used as an input.
 
-The source is [dcaribou/transfermarkt-datasets](https://github.com/dcaribou/transfermarkt-datasets), which publishes Transfermarkt-derived tables under CC0-1.0. Market values are estimates from that source, not actual transfer fees. The downloaded snapshot has no 2026/27 data.
+I separated players into training, validation, calibration and test groups before applying the season restrictions. This prevents records for the same player from appearing on both sides of the evaluation. Preprocessing is fitted on the training data, and validation MAE determines the selected model.
 
-The main database, `data/european_players.sqlite`, contains **24,604 player-season-league records from 7,645 players**, covering 2016/17 through 2025/26 in the Bundesliga, Premier League, La Liga, Serie A and Ligue 1. Statistics come from 17,937 league matches. Each target is the first available valuation after the league season ends, up to August 31. Records without a suitable target are left out.
-
-`data/european_provenance.json` records dates and coverage. The SQLite tables are `training_players`, `bayern_players` and `dataset_metadata`; the training table is also exported as CSV. The earlier single-season database is retained as `data/bundesliga.sqlite`.
-
-Player photos are cached in `assets/players/`, with source URLs in `assets/player_images.json`. A photo may show a different kit or age from the season being viewed. Missing photos are replaced with initials. To rebuild the data and refresh featured portraits:
-
-```powershell
-python expand_data.py
-python prepare_images.py
-```
-
-## Models and evaluation
-
-The benchmark compares 14 candidates: a median baseline, Random Forest, Extra Trees, XGBoost, histogram boosting, Huber gradient boosting, CatBoost and LightGBM, including loss-function and log-target variants. A final candidate averages the three individual models with the lowest validation MAE.
-
-The multi-season pipeline adds league, season, goals and assists per 90, and total goal contributions to the five basic player statistics. Previous market value is not an input.
-
-Players are assigned to separate groups before applying the season restrictions. This keeps the same player from appearing in training and evaluation.
-
-| Partition | Seasons | Valuation records | Forecast records |
+| Group | Seasons | Valuation records | Forecast records |
 | --- | --- | ---: | ---: |
 | Training | Through 2023/24 | 10,825 | 5,982 |
 | Validation | 2024/25 | 358 | 265 |
 | Interval calibration | 2024/25 | 382 | 229 |
 | Test | 2025/26 | 377 | 256 |
 
-Records outside a player's assigned group or season window are excluded. Preprocessing is fitted on training data, and validation MAE determines the selected model. The selected pipeline is not refitted on evaluation rows. Training writes the scores, metadata and split assignments beside the model file.
+Not all database rows are used for fitting. Records outside their assigned player group or season window are excluded. I saved model scores, split assignments and training metadata so the evaluation can be checked later.
 
-### Results
+## Results
 
-The validation-selected blend has these historical test results:
+Validation MAE selected the three-model blend for both tasks.
 
 | Metric | Same-season valuation | Next-season forecast |
 | --- | ---: | ---: |
-| MAE | EUR 6.39m | EUR 9.43m |
-| RMSE | EUR 11.94m | EUR 19.43m |
+| Mean absolute error | EUR 6.39m | EUR 9.43m |
+| Root mean squared error | EUR 11.94m | EUR 19.43m |
 | R-squared | 0.454 | 0.409 |
 | Observed 90% interval coverage | 88.3% | 91.4% |
 
-For the 74 Bundesliga observations in the valuation test set, MAE is EUR 6.44m. The newer blend reduced overall valuation MAE by about 1% compared with the previous selected XGBoost, but R-squared fell from 0.465. That is a small improvement in average absolute error, rather than a clear improvement on every measure.
+The valuation model's Bundesliga subset has an MAE of EUR 6.44m across 74 test observations. The blend reduced overall MAE by about 1% compared with the previous selected XGBoost, but R-squared fell from 0.465. The improvement is small and depends on which metric is used.
 
-The historical test set has been reported in earlier experiments, so it is a reused benchmark. A new season of data would be needed for a fresh test. Exact results are in [valuation-metrics.csv](reports/valuation-metrics.csv) and [forecast-metrics.csv](reports/forecast-metrics.csv).
+The historical test set has been reported in earlier experiments, so these results are a reused benchmark. They do not replace a fresh test on a new season. The detailed comparisons are saved in [valuation-metrics.csv](reports/valuation-metrics.csv) and [forecast-metrics.csv](reports/forecast-metrics.csv).
 
-### Forecasts and scenarios
+## Forecasting
 
-`prepare_forecast.py` pairs one season's statistics with the next season's recorded market value. It produces 14,192 paired records. Only players with consecutive observations can be included, so players who leave the covered leagues or disappear from the data are underrepresented.
+For the next-season model, I paired a player's statistics with their recorded value in the following season. This produced 14,192 paired records. Only players with consecutive observations could be included, which means the forecast dataset underrepresents players who left the covered leagues or disappeared from the source.
 
-The app's performance scenarios are a different tool: they change age, goals, assists and minutes while keeping the market-year context fixed. They show how the valuation model responds to those inputs. They are not forecasts of future transfer prices.
+I kept forecasting separate from the dashboard's what-if scenarios. Those scenarios change age and performance statistics while holding the market-year context fixed. They show how the valuation model responds to different inputs, rather than predicting actual future transfer prices.
 
-## Using your own CSV
+## Dashboard
 
-Training uploads need these columns. Values must be in euros, not millions.
+I built the dashboard in Streamlit to make the results easier to explore. It includes player photos, squad browsing, live valuation controls, model switching and comparisons between up to four players. Scouting filters cover age, position and recorded value, with CSV exports for shortlists and results.
 
-| Column | Expected value |
-| --- | --- |
-| `age` | Number from 15 to 45 |
-| `goals`, `assists`, `minutes_played` | Nonnegative numbers |
-| `position` | `Goalkeeper`, `Defender`, `Midfielder` or `Forward` |
-| `market_value_eur` | Nonnegative training target |
-| `player_name` | Optional display name |
+The app also shows historical valuations, model errors, feature importance and calibrated prediction intervals. Recorded source values and model estimates are labeled separately. Photos are cached locally, with initials used when an image is missing.
 
-For repeated players across seasons, also provide `player_id`, `season` as the starting year, and `competition_id`: `L1`, `GB1`, `ES1`, `IT1` or `FR1`. Each player/season/league combination must be unique. Without those identifiers, use one row per player. Training needs at least 60 records and enough observations in each evaluation partition.
+## Testing and limitations
 
-Prediction CSVs do not need `market_value_eur`. The multi-season model defaults missing league and season context to Bundesliga and 2025/26.
+I added tests for invalid inputs, repeated players, chronological splits, saved-model reloads, scenario calculations, forecast pairing and the dashboard's prediction controls. The project includes a GitHub Actions workflow for the Python checks.
 
-```powershell
-python train.py --data players.csv --output artifacts/custom_model.joblib
-python predict.py --model artifacts/custom_model.joblib --data profiles.csv --output artifacts/predictions.csv
-python -m pytest -q
-```
+The models leave out contracts, injuries, wages, reputation and transfer negotiations. Historical values are in nominal euros, and positions come from downloaded player profiles rather than a historical position table. These gaps matter, especially for expensive players.
 
-Only load model files you trust: joblib files can execute code when loaded.
+Prediction intervals use held-out residuals with a 90% coverage target. They do not guarantee coverage for a particular player, and changes between seasons can reduce coverage. Forecasts beyond the observed 2025/26 target season have not been validated. Squad comparisons may include players used during fitting and are not an independent accuracy test.
 
-## Limitations and next steps
+The next improvements would be dated contract and injury data, error analysis by position and value range, and evaluation against a new season before further tuning.
 
-The model leaves out contracts, injuries, wages, reputation and transfer negotiations. Those omissions matter, especially for expensive players. Historical values are in nominal euros, and player positions come from downloaded profiles rather than a position history.
-
-The intervals are calibrated from held-out residuals with a 90% coverage target. They do not guarantee coverage for an individual player, and changes between seasons can reduce coverage. Forecasts beyond the observed 2025/26 target season have not been validated. The optional synthetic demo is useful for checking the app, but its scores say nothing about real player valuations.
-
-The most useful next steps are to add dated contract and injury information, evaluate errors separately by position and value range, and test against a new season before further tuning. Squad comparisons may include training players and should not be treated as independent evidence of accuracy.
-
-This is an independent project, with no affiliation to FC Bayern Munich, the Bundesliga or Transfermarkt.
+This is an independent project with no affiliation to FC Bayern Munich, the Bundesliga or Transfermarkt.

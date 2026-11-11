@@ -1,14 +1,15 @@
-import numpy as np
 from pathlib import Path
+
+import joblib
+import numpy as np
 import pandas as pd
 import pytest
-import joblib
 from streamlit.testing.v1 import AppTest
 
-from valuation.data import FEATURES, TARGET, demo_data, validate_data, load_database
-from valuation.model import predict, train, split_observations
-from valuation.interactive import scenario_profiles
 from prepare_forecast import forecast_pairs
+from valuation.data import FEATURES, TARGET, demo_data, load_database, validate_data
+from valuation.interactive import scenario_profiles
+from valuation.model import predict, split_observations, train
 
 
 @pytest.fixture(scope="module")
@@ -20,7 +21,16 @@ def test_reproducible_data():
     pd.testing.assert_frame_equal(demo_data(), demo_data())
 
 
-@pytest.mark.parametrize("field,value", [("age", 70), ("goals", -1), ("assists", np.nan), ("minutes_played", np.inf), ("position", "Striker")])
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("age", 70),
+        ("goals", -1),
+        ("assists", np.nan),
+        ("minutes_played", np.inf),
+        ("position", "Striker"),
+    ],
+)
 def test_invalid_inputs(field, value):
     frame = demo_data(100)
     if field != "position":
@@ -40,7 +50,11 @@ def test_missing_columns_and_duplicate_players():
 
 
 def test_models_and_disjoint_split_sizes(bundle):
-    assert set(bundle["metrics"].index) == {"Median baseline", "Random Forest", "XGBoost"}
+    assert set(bundle["metrics"].index) == {
+        "Median baseline",
+        "Random Forest",
+        "XGBoost",
+    }
     assert sum(bundle["metadata"]["split_sizes"].values()) == 240
     assert bundle["selected"] == bundle["metrics"].validation_mae.idxmin()
     assert np.isfinite(bundle["metrics"].to_numpy()).all()
@@ -66,6 +80,7 @@ def test_saved_pipeline_round_trip(bundle, tmp_path):
 
 def test_database_loading(tmp_path):
     import sqlite3
+
     frame = demo_data(100)
     path = tmp_path / "players.sqlite"
     # Real databases include a player ID used for deterministic row ordering.
@@ -79,7 +94,9 @@ def longitudinal_data():
     base = demo_data(120)
     base["player_id"] = range(len(base))
     base["competition_id"] = "L1"
-    return pd.concat([base.assign(season=year) for year in range(2022, 2026)], ignore_index=True)
+    return pd.concat(
+        [base.assign(season=year) for year in range(2022, 2026)], ignore_index=True
+    )
 
 
 def test_longitudinal_splits_do_not_share_players_or_future_seasons():
@@ -111,7 +128,12 @@ def test_single_season_cross_league_players_stay_together():
 
 def test_expanded_pipeline_with_default_and_explicit_context(tmp_path):
     bundle = train(longitudinal_data())
-    assert {"CatBoost MAE", "LightGBM MAE", "Extra Trees", "Top 3 validation blend"}.issubset(bundle["metrics"].index)
+    assert {
+        "CatBoost MAE",
+        "LightGBM MAE",
+        "Extra Trees",
+        "Top 3 validation blend",
+    }.issubset(bundle["metrics"].index)
     profiles = demo_data(3).drop(columns=TARGET)
     inferred = predict(bundle, profiles)
     explicit = predict(bundle, profiles.assign(season=2025, competition_id="L1"))
@@ -145,12 +167,16 @@ def test_forecast_pairs_use_previous_season_features():
 
 
 def test_streamlit_prediction_flow():
-    app = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py", default_timeout=60).run()
+    app = AppTest.from_file(
+        Path(__file__).resolve().parents[1] / "app.py", default_timeout=60
+    ).run()
     assert not app.exception
     app.button[0].click().run()
     assert not app.exception
     assert any("Estimated market value" in metric.label for metric in app.metric)
-    model_control = next(control for control in app.selectbox if control.label == "Valuation model")
+    model_control = next(
+        control for control in app.selectbox if control.label == "Valuation model"
+    )
     model_control.set_value("Median baseline").run()
     assert not app.exception
     app.radio[0].set_value("Synthetic demonstration").run()

@@ -1,4 +1,5 @@
 """Batch prediction with a trusted, locally trained model artifact."""
+
 import argparse
 from pathlib import Path
 
@@ -10,7 +11,11 @@ from valuation.model import predict
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--model", default="artifacts/model.joblib", help="Trusted model file from train.py")
+    parser.add_argument(
+        "--model",
+        default="artifacts/model.joblib",
+        help="Trusted model file from train.py",
+    )
     parser.add_argument("--data", required=True, help="Player profiles CSV")
     parser.add_argument("--output", default="artifacts/predictions.csv")
     args = parser.parse_args()
