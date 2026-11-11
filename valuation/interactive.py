@@ -52,7 +52,7 @@ def render_lab(bundle, data, profile, model_name):
                 st.caption("Recorded values are historical labels. These players may have appeared in fitting; this comparison does not measure independent accuracy.")
                 st.download_button("Export comparison", results.to_csv(index=False), "player_comparison.csv", "text/csv")
     with scenario_tab:
-        st.subheader("Explore the possibilities")
+        st.subheader("Change the statistics")
         st.caption("Counterfactual scenarios hold league and market-year context fixed. These are not validated forecasts of future transfer prices; injuries, contracts, market inflation and changes of club are not modeled.")
         if profile is None:
             st.info("Choose a player or estimate a custom profile first.")
@@ -71,7 +71,7 @@ def render_lab(bundle, data, profile, model_name):
                 st.warning("Scenario exceeds the observed data range: " + ", ".join(outside))
             st.download_button("Export scenario", results.to_csv(index=False), "valuation_scenarios.csv", "text/csv")
     with discover_tab:
-        st.subheader("Find your next prospect")
+        st.subheader("Filter players")
         if "player_id" not in latest:
             st.info("Select the real player database for scouting filters.")
         else:

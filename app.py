@@ -14,10 +14,10 @@ from valuation.interactive import render_lab
 
 st.set_page_config(page_title="Bayern · Player Valuation", page_icon="⚽", layout="wide")
 st.markdown(STYLES, unsafe_allow_html=True)
-st.markdown('<div class="topbar"><div class="wordmark">SCOUT<span> / </span>BAYERN</div><div class="status">● &nbsp; PLAYER INTELLIGENCE</div></div>', unsafe_allow_html=True)
-st.markdown('<div class="eyebrow">THE GAME, THROUGH A DIFFERENT LENS</div>', unsafe_allow_html=True)
-st.markdown('<h1>See the player.<br><span style="color:#91a1b7">Understand the value.</span></h1>', unsafe_allow_html=True)
-st.markdown('<div class="intro">From the pitch to the numbers. Explore player profiles, discover your squad, and put a statistical perspective on market value.</div>', unsafe_allow_html=True)
+st.markdown('<div class="topbar"><div class="wordmark">SCOUT<span> / </span>BAYERN</div><div class="status">● &nbsp; PLAYER VALUATION</div></div>', unsafe_allow_html=True)
+st.markdown('<div class="eyebrow">FOOTBALL DATA PROJECT</div>', unsafe_allow_html=True)
+st.markdown('<h1>Player values,<br><span style="color:#91a1b7">based on season statistics.</span></h1>', unsafe_allow_html=True)
+st.markdown('<div class="intro">Compare players, adjust their statistics and see how the models estimate their market value.</div>', unsafe_allow_html=True)
 
 database_path = Path("data/bundesliga.sqlite")
 model_path = Path("artifacts/bundesliga_model.joblib")
@@ -31,7 +31,7 @@ if Path("data/european_players.sqlite").exists() and Path("artifacts/european_mo
 real_available = database_path.exists() and model_path.exists()
 with st.sidebar:
     st.header("SCOUT / BAYERN")
-    st.caption("FOOTBALL INTELLIGENCE STUDIO")
+    st.caption("PLAYER STATS AND MARKET VALUES")
     options = ([real_label] if real_available else []) + ["Synthetic demonstration", "Upload CSV"]
     source = st.radio("Training data", options)
     uploaded = st.file_uploader("Training CSV", type="csv") if source == "Upload CSV" else None
@@ -175,7 +175,7 @@ with valuation_tab:
 
 with squad_tab:
     st.subheader("The squad room")
-    st.write("Familiar faces. A closer look at the numbers.")
+    st.write("Browse a club's players and their recorded season statistics.")
     if "player_id" not in latest or "club_name" not in latest:
         st.info("Select the trained database to explore real players and their portraits.")
     else:
